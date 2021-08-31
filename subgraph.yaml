@@ -1,0 +1,71 @@
+specVersion: 0.0.1
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: UnifarmV18
+    network: rinkeby
+    source:
+      address: "0x2e47fd3D73F95e1B0d20Ef07cA2E4aD15Cc092B5"
+      abi: UnifarmV18
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.2
+      language: wasm/assemblyscript
+      entities:
+        - BlockedDetails
+        - Claim
+        - DailyDistributionDetails
+        - IntervalDaysDetails
+        - LockableTokenDetails
+        - OptionableBenefitDetails
+        - OwnershipTransferred
+        - Paused
+        - ReferralEarn
+        - ReferrerPercentageDetails
+        - SequenceDetails
+        - Stake
+        - StakeDurationDetails
+        - TokenDetails
+        - UnStake
+        - Unpaused
+        - WithdrawDetails
+      abis:
+        - name: UnifarmV18
+          file: ./abis/UnifarmV18.json
+      eventHandlers:
+        - event: BlockedDetails(indexed address,indexed address,bool,uint256)
+          handler: handleBlockedDetails
+        - event: Claim(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleClaim
+        - event: DailyDistributionDetails(indexed address,indexed address,uint256,uint256)
+          handler: handleDailyDistributionDetails
+        - event: IntervalDaysDetails(uint256[],uint256)
+          handler: handleIntervalDaysDetails
+        - event: LockableTokenDetails(indexed address,uint256,bool,uint256)
+          handler: handleLockableTokenDetails
+        - event: OptionableBenefitDetails(uint256,uint256)
+          handler: handleOptionableBenefitDetails
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: Paused(address)
+          handler: handlePaused
+        - event: ReferralEarn(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleReferralEarn
+        - event: ReferrerPercentageDetails(uint256,uint256)
+          handler: handleReferrerPercentageDetails
+        - event: SequenceDetails(indexed address,address[],uint256)
+          handler: handleSequenceDetails
+        - event: Stake(indexed address,uint256,indexed address,indexed address,uint256,uint256)
+          handler: handleStake
+        - event: StakeDurationDetails(uint256,uint256)
+          handler: handleStakeDurationDetails
+        - event: TokenDetails(indexed address,uint256,uint256,uint256,uint256)
+          handler: handleTokenDetails
+        - event: UnStake(indexed address,indexed address,uint256,uint256,uint256)
+          handler: handleUnStake
+        - event: Unpaused(address)
+          handler: handleUnpaused
+        - event: WithdrawDetails(indexed address,uint256,uint256)
+          handler: handleWithdrawDetails
+      file: ./src/mapping.ts
