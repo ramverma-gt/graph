@@ -19,17 +19,17 @@ import {
   Unpaused,
   WithdrawDetails
 } from "../generated/UnifarmV18/UnifarmV18"
-import { ExampleEntity } from "../generated/schema"
+import { StakeEntity, ClaimEntity, UnStakeEntity, ReferralEarnEntity } from "../generated/schema"
 
-export function handleBlockedDetails(event: BlockedDetails): void {
+export function handleStake(event: Stake): void {
   // Entities can be loaded from the store using a string ID; this ID
   // needs to be unique across all entities of the same type
-  let entity = ExampleEntity.load(event.transaction.from.toHex())
+  let entity = StakeEntity.load(event.transaction.from.toHex())
 
   // Entities only exist after they have been saved to the store;
   // `null` checks allow to create entities on demand
   if (entity == null) {
-    entity = new ExampleEntity(event.transaction.from.toHex())
+    entity = new StakeEntity(event.transaction.from.toHex())
 
     // Entity fields can be set using simple assignments
     entity.count = BigInt.fromI32(0)
@@ -39,8 +39,11 @@ export function handleBlockedDetails(event: BlockedDetails): void {
   entity.count = entity.count + BigInt.fromI32(1)
 
   // Entity fields can be set based on event parameters
-  entity.stakedTokenAddress = event.params.stakedTokenAddress
-  entity.rewardTokenAddress = event.params.rewardTokenAddress
+  entity.userAddress = event.params.userAddress
+  entity.stakeId = event.params.stakeId
+  entity.referrerAddress = event.params.referrerAddress
+  entity.tokenAddress = event.params.tokenAddress
+  entity.stakedAmount = event.params.stakedAmount
 
   // Entities can be written to the store with `.save()`
   entity.save()
@@ -92,40 +95,86 @@ export function handleBlockedDetails(event: BlockedDetails): void {
   // - contract.viewTokensCount(...)
 }
 
-export function handleClaim(event: Claim): void {}
+export function handleClaim(event: Claim): void {
+  let entity = ClaimEntity.load(event.transaction.from.toHex())
 
-export function handleDailyDistributionDetails(
-  event: DailyDistributionDetails
-): void {}
+  if (entity == null) {
+    entity = new ClaimEntity(event.transaction.from.toHex())
 
-export function handleIntervalDaysDetails(event: IntervalDaysDetails): void {}
+    // Entity fields can be set using simple assignments
+    entity.count = BigInt.fromI32(0)
+  }
 
-export function handleLockableTokenDetails(event: LockableTokenDetails): void {}
+  // BigInt and BigDecimal math are supported
+  entity.count = entity.count + BigInt.fromI32(1)
 
-export function handleOptionableBenefitDetails(
-  event: OptionableBenefitDetails
-): void {}
+  // Entity fields can be set based on event parameters
+  entity.userAddress = event.params.userAddress
+  entity.stakedTokenAddress = event.params.stakedTokenAddress
+  entity.tokenAddress = event.params.tokenAddress
+  entity.claimRewards = event.params.claimRewards
+}
 
-export function handleOwnershipTransferred(event: OwnershipTransferred): void {}
+// export function handleDailyDistributionDetails(
+//   event: DailyDistributionDetails
+// ): void {}
 
-export function handlePaused(event: Paused): void {}
+// export function handleIntervalDaysDetails(event: IntervalDaysDetails): void {}
 
-export function handleReferralEarn(event: ReferralEarn): void {}
+// export function handleLockableTokenDetails(event: LockableTokenDetails): void {}
 
-export function handleReferrerPercentageDetails(
-  event: ReferrerPercentageDetails
-): void {}
+// export function handleOptionableBenefitDetails(
+//   event: OptionableBenefitDetails
+// ): void {}
 
-export function handleSequenceDetails(event: SequenceDetails): void {}
+// export function handleOwnershipTransferred(event: OwnershipTransferred): void {}
 
-export function handleStake(event: Stake): void {}
+// export function handlePaused(event: Paused): void {}
 
-export function handleStakeDurationDetails(event: StakeDurationDetails): void {}
+// export function handleReferralEarn(event: ReferralEarn): void {
+//   let entity = ReferralEarn.load(event.transaction.from.toHex())
 
-export function handleTokenDetails(event: TokenDetails): void {}
+//   if (entity == null) {
+//     entity = new ReferralEarn(event.transaction.from.toHex())
 
-export function handleUnStake(event: UnStake): void {}
+//     // Entity fields can be set using simple assignments
+//     entity.count = BigInt.fromI32(0)
+//   }
+// }
 
-export function handleUnpaused(event: Unpaused): void {}
+// export function handleReferrerPercentageDetails(
+//   event: ReferrerPercentageDetails
+// ): void {}
 
-export function handleWithdrawDetails(event: WithdrawDetails): void {}
+// export function handleSequenceDetails(event: SequenceDetails): void {}
+
+// export function handleStake(event: Stake): void {}
+
+// export function handleStakeDurationDetails(event: StakeDurationDetails): void {}
+
+// export function handleTokenDetails(event: TokenDetails): void {}
+
+export function handleUnStake(event: UnStake): void {
+  let entity = UnStakeEntity.load(event.transaction.from.toHex())
+
+  if (entity == null) {
+    entity = new UnStakeEntity(event.transaction.from.toHex())
+
+    // Entity fields can be set using simple assignments
+    entity.count = BigInt.fromI32(0)
+  }
+
+  // BigInt and BigDecimal math are supported
+  entity.count = entity.count + BigInt.fromI32(1)
+
+  // Entity fields can be set based on event parameters
+  entity.userAddress = event.params.userAddress
+  entity.unStakedtokenAddress = event.params.unStakedtokenAddress
+  entity.unStakedAmount = event.params.unStakedAmount
+  entity.time = event.params.time
+  entity.stakeId = event.params.stakeId
+}
+
+// export function handleUnpaused(event: Unpaused): void {}
+
+// export function handleWithdrawDetails(event: WithdrawDetails): void {}

@@ -1,6 +1,6 @@
 specVersion: 0.0.2
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum/contract
     name: UnifarmV18
@@ -8,7 +8,7 @@ dataSources:
     source:
       address: "0x2e47fd3D73F95e1B0d20Ef07cA2E4aD15Cc092B5"
       abi: UnifarmV18
-      startBlock: 
+      startBlock: null
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -20,7 +20,7 @@ dataSources:
         - UnStake
       abis:
         - name: UnifarmV18
-          file: ./abis/UnifarmV18.json
+          file: UnifarmV18/abis/UnifarmV18.json
       eventHandlers:
         - event: Claim(indexed address,indexed address,indexed address,uint256,uint256)
           handler: handleClaim
@@ -30,4 +30,4 @@ dataSources:
           handler: handleStake
         - event: UnStake(indexed address,indexed address,uint256,uint256,uint256)
           handler: handleUnStake
-      file: ./src/mapping.ts
+      file: UnifarmV18/UnifarmV18.wasm
